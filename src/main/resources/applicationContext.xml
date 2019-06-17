@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- HikariCP 高性能数据库连接池 -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" lazy-init="false" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="jdbcUrl" value="${spring.datasource.url}"/>
+        <property name="username" value="${spring.datasource.username}"/>
+        <property name="password" value="${spring.datasource.password}"/>
+        <property name="autoCommit" value="false"/> <!-- true -->
+        <property name="readOnly" value="false"/>	<!-- 连接只读数据库时配置为true， 保证安全 -->  
+        <property name="transactionIsolation" value="TRANSACTION_Serializable"/>
+        <property name="connectionTimeout" value="30000"/>
+        <property name="idleTimeout" value="31000"/>
+        <property name="maxLifetime" value="31000"/> <!-- 540000 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired）-->
+        <property name="maximumPoolSize" value="${jdbc.pool.maxPoolSize}"/>
+        <property name="isolateInternalQueries" value="false"/>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven />
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.uzone.settlement" />
+    </bean>
+</beans>
