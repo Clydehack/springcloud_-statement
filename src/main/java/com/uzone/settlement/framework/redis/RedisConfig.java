@@ -14,9 +14,12 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisConfig {
 
 	/**
+	 * 使用框架默认的template
+	 */
+	/**
 	 * 使用方法 - 第一种（很早的方法了）
 	 * 通过一个连接池的配置创建了RedisConnectionFactory
-	 */
+	 
 	private RedisConnectionFactory connectionFactory = null;
 	
 	@Bean(name = "RedisConnectionFactory")
@@ -37,18 +40,18 @@ public class RedisConfig {
 		this.connectionFactory = connectionFactory;
 		return connectionFactory;
 	}
-	
+	*/
 	/**
 	 * 使用方法 - 第二种（使用最多的方法）
 	 * redisTemplate,应该是类似于mongodbTemplate一样的，看起来就像好用的代名词
-	 */
+	 
 	@Bean(name = "redisTemplate")
 	public RedisTemplate<Object, Object> initRedisTemplate(){
 		RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<Object, Object>();
 		//redisTemplate.setConnectionFactory(initConnectionFactory());
 		return redisTemplate;
 	}
-	
+	*/
 	
 	/************************** 使用方法 - 第三种 **************************/
 	/* 缓存注解 */
