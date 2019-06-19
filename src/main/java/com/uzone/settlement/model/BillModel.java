@@ -32,5 +32,5 @@ public class BillModel {
 	@ApiModelProperty(value = "商户订单号，有容指定的订单号", required = true)
 	private String biz_order_no;
 	@ApiModelProperty(value = "支付类型 - 网关支付、微信支付、支付宝支付、账户内转账等", required = true)
-	private String pay_type;
+	private String pay_method;
 }

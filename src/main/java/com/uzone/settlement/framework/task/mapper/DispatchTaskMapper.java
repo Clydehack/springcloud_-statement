@@ -1,8 +1,12 @@
 package com.uzone.settlement.framework.task.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import com.uzone.settlement.model.BillModel;
 
 @Mapper
 public interface DispatchTaskMapper {
@@ -19,5 +23,11 @@ public interface DispatchTaskMapper {
 	@Select("select case checkaccount_status when 'S' then 1 else 0 end from bu_checkaccount_log where checkaccount_time = #{yesterday}")
 	boolean queryReconciliationStatus(@Param("yesterday") String yesterday);
 	
+	/** 初始化对账日志 */
 	int insertYesterdayInit();
+	
+	/** 取出本地昨日的交易数据 */
+	@Select("select allinpay_order_no,transfer_type,trans_amount,fee,create_time,biz_order_no,pay_method "
+			+ " from fin_transfer where from_unixtime(create_time,'%Y-%d-%d') = #{yesterday}")
+	Map<String, BillModel> queryLocalData(@Param("yesterday") String yesterday);
 }
