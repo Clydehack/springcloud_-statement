@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @ClassName BillModel
- * @Description 统一对账模型，所有账单都转为此类型进行对账
+ * @ClassName GeneralLedgerModel
+ * @Description 统一总账模型，所有账单都转为此类型进行对账
  * @Author 赵丹青
  * @Date 2019/6/18 14:25
  * @Version 1.0
@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("统一对账模型，所有账单都转为此类型进行对账")
-public class BillModel {
+@ApiModel("统一总账模型，所有账单都转为此类型进行对账")
+public class GeneralLedgerModel {
 	@ApiModelProperty(value = "通联订单号", required = true)
 	private String allinpay_order_no;
 	@ApiModelProperty(value = "订单类型 - 类型统一为：充值、提现、转账", required = true)

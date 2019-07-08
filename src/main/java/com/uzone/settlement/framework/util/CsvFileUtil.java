@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.csvreader.CsvReader;
-import com.uzone.settlement.model.BillModel;
+import com.uzone.settlement.model.GeneralLedgerModel;
 
 /**
  * 使用JavaCSV工具处理csv文件
@@ -28,8 +28,8 @@ public class CsvFileUtil {
 	/**
 	 * 给到“文件地址”和“分隔符”，获取数据封装成“对账模型”（失败向上抛出异常）
 	 */
-	public static Map<String, BillModel> analysisAllinpayCsvUtil(String fileUrl, char delimiter) throws IOException {
-		Map<String, BillModel> map = new HashMap<>();
+	public static Map<String, GeneralLedgerModel> analysisAllinpayCsvUtil(String fileUrl, char delimiter) throws IOException {
+		Map<String, GeneralLedgerModel> map = new HashMap<>();
 		InputStream in = null;
 		try {
 			URL url = new URL(fileUrl);
@@ -45,7 +45,7 @@ public class CsvFileUtil {
 			*/
 			csvReader.readHeaders();
 			while (csvReader.readRecord()) {
-				BillModel billModel = new BillModel();
+				GeneralLedgerModel billModel = new GeneralLedgerModel();
 				csvReader.get("订单类型");
 				csvReader.get("支付方式");
 				

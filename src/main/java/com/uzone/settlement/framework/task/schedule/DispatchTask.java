@@ -11,10 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.uzone.settlement.framework.task.handle.AllinpayAPIHandler;
 import com.uzone.settlement.framework.task.mapper.DispatchTaskMapper;
 import com.uzone.settlement.framework.util.CsvFileUtil;
 import com.uzone.settlement.framework.util.RedisUtil;
-import com.uzone.settlement.model.BillModel;
+import com.uzone.settlement.model.GeneralLedgerModel;
 
 /**
  * 任务调度
@@ -25,6 +26,8 @@ public class DispatchTask {
 	
 	private Logger logger = LoggerFactory.getLogger(DispatchTask.class);
 	
+	@Autowired
+	AllinpayAPIHandler allinpayAPIHandler;
 //	@Autowired
 //	DataLoadingHandle dataLoadingHandle = new DataLoadingRedisImpl();	// 注入redis的实现
 	
@@ -43,7 +46,7 @@ public class DispatchTask {
 	@Scheduled(cron = "0/5 * * * * ?")
 	public void task() {
 		/**
-		 * 0.每30min定时启动，先任务初始化
+		 * 0.每30min定时启动，先判断是否已对账，未对账就任务初始化
 		 */
 		String yesterday = LocalDate.now().minusDays(+1).toString();	// 获取前一天的日期
 		int count = dispatchTaskMapper.exitColumn(yesterday);
@@ -59,12 +62,10 @@ public class DispatchTask {
 		/**
 		 * 下载云商通账单数据，如果失败，间隔30s后重试，如果失败将异常记录在日志表中
 		 */
-		String url = "";
 		// 调用通联接口，获取url（调用代理，不引入通联SDK）
+		String url = allinpayAPIHandler.depositApplyGateWay(userId, amount, bizOrderNo);
 		
-		
-			
-		Map<String, BillModel> allinpay_map = null;
+		Map<String, GeneralLedgerModel> allinpay_map = null;
 		try {
 			allinpay_map = CsvFileUtil.analysisAllinpayCsvUtil(url, '|');
 		} catch (IOException e) {
@@ -84,7 +85,7 @@ public class DispatchTask {
 		/**
 		 * 从库里加载本地账单数据
 		 */
-		Map<String, BillModel> uzone_map = null;
+		Map<String, GeneralLedgerModel> uzone_map = null;
 		uzone_map = dispatchTaskMapper.queryLocalData(yesterday);
 		if(uzone_map == null || uzone_map.size() == 0) {
 			logger.error("加载本地账单失败");
@@ -111,7 +112,7 @@ public class DispatchTask {
 		/**
 		 * 3.将对账结果入库，异常的进异常表，正常的进明细表，然后清理redis缓存
 		 */
-		Map<String, BillModel> intersection = (Map<String, BillModel>) redisUtil.sGet(INTERSECTION);
+		Map<String, GeneralLedgerModel> intersection = (Map<String, GeneralLedgerModel>) redisUtil.sGet(INTERSECTION);
 		// 对平的放入明细表，然后清洗
 		redisUtil.sGet(LOCAL_DIFF_SET);
 		// 本地放入异常，然后清洗

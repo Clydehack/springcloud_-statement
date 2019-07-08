@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @ClassName FeeModel
- * @Description 手续费对账
+ * @Description 被第三方收取的手续费对账 -- 特殊对账
  * @Author 赵丹青
  * @Date 2019/6/18 14:25
  * @Version 1.0

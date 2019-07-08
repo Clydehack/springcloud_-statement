@@ -11,10 +11,10 @@
 
     <!-- 演示按时间滚动的策略 -->
     <appender name="defaultLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/ant-server.log</file>
+        <file>logs/settlement.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/ant-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/settlement.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 保留 30天数据，默认无限-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
