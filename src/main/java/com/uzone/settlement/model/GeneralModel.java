@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @ClassName FeeModel
- * @Description 手续费对账
+ * @ClassName GeneralModel
+ * @Description 基本对账模型
  * @Author 赵丹青
  * @Date 2019/6/18 14:25
  * @Version 1.0
@@ -17,14 +17,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("手续费对账，网关支付时(GATEWAY_IN)，通联向有容收取的手续费，不在通联指定的交易业务对账的范畴内，故单独提出此数据对账")
-public class FeeModel {
+@ApiModel("基本对账模型，所有账单都转为此类型进行对账")
+public class GeneralModel {
 	@ApiModelProperty(value = "商户订单号，有容指定的订单号", required = true)
 	private String bizOrderNo;
 	@ApiModelProperty(value = "交易金额", required = true)
-	private String amount;
-	@ApiModelProperty(value = "有容向通联交纳的手续费", required = true)
-	private String fee;
-//	@ApiModelProperty(value = "订单创建时间", required = true)
-//	private String createTime;
+	private String transAmount;
+	@ApiModelProperty(value = "现有金额", required = true)
+	private String balanceAmount;
+	@ApiModelProperty(value = "订单创建时间", required = true)
+	private String createTime;
 }

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.csvreader.CsvReader;
-import com.uzone.settlement.model.GeneralLedgerModel;
+import com.uzone.settlement.model.GeneralModel;
 
 /**
  * 使用JavaCSV工具处理csv文件
@@ -28,8 +28,8 @@ public class CsvFileUtil {
 	/**
 	 * 给到“文件地址”和“分隔符”，获取数据封装成“对账模型”（失败向上抛出异常）
 	 */
-	public static Map<String, GeneralLedgerModel> analysisAllinpayCsvUtil(String fileUrl, char delimiter) throws IOException {
-		Map<String, GeneralLedgerModel> map = new HashMap<>();
+	public static Map<String, GeneralModel> analysisAllinpayCsvUtil(String fileUrl, char delimiter) throws IOException {
+		Map<String, GeneralModel> map = new HashMap<>();
 		InputStream in = null;
 		try {
 			URL url = new URL(fileUrl);
@@ -45,17 +45,17 @@ public class CsvFileUtil {
 			*/
 			csvReader.readHeaders();
 			while (csvReader.readRecord()) {
-				GeneralLedgerModel billModel = new GeneralLedgerModel();
+				GeneralModel billModel = new GeneralModel();
 				csvReader.get("订单类型");
 				csvReader.get("支付方式");
 				
-				billModel.setTransfer_type(csvReader.get("订单类型"));
-				billModel.setAllinpay_order_no(csvReader.get("通联订单号"));
-				billModel.setTrans_amount(csvReader.get("交易金额(单位:分)"));
-				billModel.setFee(csvReader.get("手续费金额(单位:分)"));
-				billModel.setCreate_time(csvReader.get("交易时间"));
-				billModel.setBiz_order_no(csvReader.get("商户订单编号"));
-				map.put(csvReader.get("商户订单编号"), billModel);
+//				billModel.setTransfer_type(csvReader.get("订单类型"));
+//				billModel.setAllinpay_order_no(csvReader.get("通联订单号"));
+//				billModel.setTrans_amount(csvReader.get("交易金额(单位:分)"));
+//				billModel.setFee(csvReader.get("手续费金额(单位:分)"));
+//				billModel.setCreate_time(csvReader.get("交易时间"));
+//				billModel.setBiz_order_no(csvReader.get("商户订单编号"));
+//				map.put(csvReader.get("商户订单编号"), billModel);
 			}
 			System.out.println("");
 		} finally {

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.uzone.settlement.model.GeneralLedgerModel;
+import com.uzone.settlement.model.GeneralModel;
 
 @Mapper
 public interface DispatchTaskMapper {
@@ -29,5 +29,5 @@ public interface DispatchTaskMapper {
 	/** 取出本地昨日的交易数据 */
 	@Select("select allinpay_order_no,transfer_type,trans_amount,fee,create_time,biz_order_no,pay_method "
 			+ " from fin_transfer where from_unixtime(create_time,'%Y-%d-%d') = #{yesterday}")
-	Map<String, GeneralLedgerModel> queryLocalData(@Param("yesterday") String yesterday);
+	Map<String, GeneralModel> queryLocalData(@Param("yesterday") String yesterday);
 }
