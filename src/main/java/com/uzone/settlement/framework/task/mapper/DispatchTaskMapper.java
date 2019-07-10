@@ -6,14 +6,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import com.uzone.settlement.model.BuCheckaccountLogPO;
 import com.uzone.settlement.model.GeneralModel;
 
 @Mapper
 public interface DispatchTaskMapper {
 	
 	/** 查询对账日志 */
-	@Select("select count(*) from bu_checkaccount_log where checkaccount_time = #{date}")
-	int exitColumn(@Param("date") String date);
+	@Select("select * from bu_checkaccount_log where checkaccount_time = #{date}")
+	BuCheckaccountLogPO queryLog(@Param("date") String date);
 	
 	/** 取出本地昨日的交易数据 */
 	@Select("select allinpay_order_no, transfer_type, trans_amount, fee, create_time, biz_order_no, pay_method "
