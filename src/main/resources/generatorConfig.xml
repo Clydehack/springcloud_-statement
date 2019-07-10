@@ -5,6 +5,7 @@
 
 		<!--取消注释 插件会生成很多注释 -->
 		<commentGenerator>
+			<property name="suppressDate" value="true" />
 			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
 
@@ -15,23 +16,35 @@
 
 		<!-- 生成pojo位置 -->
 		<javaModelGenerator
-			targetPackage="com.uzone.settlement.model.PO"
-			targetProject="../src/main/java" />
+			targetPackage="com.uzone.settlement.model"
+			targetProject="springcloud_statement" >
+			<property name="enableSubPackages" value="true" />
+            <!-- 从数据库返回的值被清理前后的空格  -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        
 		<!-- mapper生成位置 -->
-		<sqlMapGenerator targetPackage="com.uzone.settlement.model.mapper"
-			targetProject="../src/main/java" />
-		<!-- targetPackage：mapper接口生成的位置 -->
+		<sqlMapGenerator
+			targetPackage="com.uzone.settlement.model"
+			targetProject="springcloud_statement" />
+			
+		<!-- mapper接口生成的位置 -->
 		<javaClientGenerator
 			targetPackage="com.uzone.settlement.model"
-			targetProject="../src/main/java" type="XMLMAPPER" />
+			targetProject="springcloud_statement"
+			type="XMLMAPPER" >
+			<property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
 
-		<table tableName="bu_checkaccount_log"></table>
-
-		<table tableName="bu_checkaccount_exp">
-			<!-- <columnOverride column="article_time" jdbcType="DATE"></columnOverride> -->
+		<!-- 生成那些表，tableName对应数据库表，domainObjectName对应实体类名 -->   
+        <table tableName="bu_checkaccount_log" domainObjectName="BuCheckaccountLogPO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="bu_checkaccount_exp" domainObjectName="BuCheckaccountExpPO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		 
+		<!-- 有些表的字段需要指定java类型 
+		<table schema="" tableName=""> 
+			<columnOverride column="" javaType="" /> 
 		</table>
-		<!-- 有些表的字段需要指定java类型 <table schema="" tableName=""> <columnOverride column="" 
-			javaType="" /> </table> -->
+		 -->
 
 	</context>
 </generatorConfiguration>
