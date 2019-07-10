@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="context1">
+
+		<!--取消注释 插件会生成很多注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<!-- 连接数据库 connectionURL： -->
+		<jdbcConnection
+			connectionURL="jdbc:mysql://47.105.162.113:3306/uzone"
+			driverClass="com.mysql.jdbc.Driver" password="" userId="root" />
+
+		<!-- 生成pojo位置 -->
+		<javaModelGenerator
+			targetPackage="com.uzone.settlement.model.PO"
+			targetProject="../src/main/java" />
+		<!-- mapper生成位置 -->
+		<sqlMapGenerator targetPackage="com.uzone.settlement.model.mapper"
+			targetProject="../src/main/java" />
+		<!-- targetPackage：mapper接口生成的位置 -->
+		<javaClientGenerator
+			targetPackage="com.uzone.settlement.model"
+			targetProject="../src/main/java" type="XMLMAPPER" />
+
+		<table tableName="bu_checkaccount_log"></table>
+
+		<table tableName="bu_checkaccount_exp">
+			<!-- <columnOverride column="article_time" jdbcType="DATE"></columnOverride> -->
+		</table>
+		<!-- 有些表的字段需要指定java类型 <table schema="" tableName=""> <columnOverride column="" 
+			javaType="" /> </table> -->
+
+	</context>
+</generatorConfiguration>
