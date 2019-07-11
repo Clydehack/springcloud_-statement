@@ -59,7 +59,7 @@ public class DispatchTask {
 	@Scheduled(cron = "0/5 * * * * ?")
 	public void task() {
 		try {
-			List<String> userIdList = constructionHandler.initTask(yesterday);
+			List<String> userIdList = constructionHandler.initTask(yesterday);			// 统一通过用户id获取格式化数据
 			logger.info("初始化完毕");
 			
 			localDataHandler.processingTask(yesterday, LOCAL_SET, userIdList);

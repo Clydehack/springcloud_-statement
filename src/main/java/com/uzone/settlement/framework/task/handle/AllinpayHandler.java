@@ -28,7 +28,7 @@ public class AllinpayHandler {
     public List<GeneralModel> processingTask(String date, String key, List<String> userIdList) throws CustomException{
     	List<GeneralModel> allinpay = new ArrayList<>();
     	for (String userId : userIdList) {
-    		List<GeneralModel> allinpayBizOrderNo = queryDetail(userId);
+    		List<GeneralModel> allinpayBizOrderNo = queryDetail("uzone" + userId);
     		allinpay.addAll(allinpayBizOrderNo);
 		}
     	

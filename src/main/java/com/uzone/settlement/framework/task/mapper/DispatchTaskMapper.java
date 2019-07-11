@@ -27,15 +27,44 @@ public interface DispatchTaskMapper {
 			+ "desc")
 	List<String> queryUserId(@Param("yesterday") String yesterday);
 	
-	/** 取出本地昨日的交易数据 TODO ①需要判断借+贷-方向 ②要查所有明细表才行 ③通联的余额是咱们的什么余额？汇票实质上已经成为有容的余额了吧？ ④sql查出的数据优点乱，暂时未理明白 */
-	@Select("select user_id, biz_order_no as bizOrderNo, trans_amount as transAmount, balance as balanceAmount, create_time as createTime "
-			+ " from fin_cash_acc where date_format(create_time,'%Y-%m-%d') = #{yesterday} and user_id = #{userId} "// 现金表明细
+	/** 取出本地昨日的交易数据  ①需要判断借+贷-方向 ②要查所有明细表才行 ③通联的余额是咱们的什么余额？汇票实质上已经成为有容的余额了吧？ ④sql查出的数据有点乱，暂时未理明白 */
+	@Select("select "
+			+ "		user_id, "
+			+ "		biz_order_no as bizOrderNo, "
+			+ "		case when drcr = 'cr' then '-1'*trans_amount else trans_amount end as transAmount, "
+			+ "		balance as balanceAmount, create_time as createTime "
+			+ "from "
+			+ "		fin_cash_acc "
+			+ "where "
+			+ "		date_format(create_time,'%Y-%m-%d') = #{yesterday} "
+			+ "and "
+			+ "		user_id = #{userId} "// 现金表明细
 			+ "union "
-			+ "select user_id, biz_order_no as bizOrderNo, trans_amount as transAmount, bill_balance as balanceAmount, create_time as createTime "
-			+ " from fin_bill_acc where date_format(create_time,'%Y-%m-%d') = #{yesterday} and user_id = #{userId} "// 汇票表明细
+			+ "select "
+			+ "		user_id, "
+			+ "		biz_order_no as bizOrderNo, "
+			+ "		case when drcr = 'cr' then '-1'*trans_amount else trans_amount end as transAmount, "
+			+ "		bill_balance as balanceAmount, "
+			+ "		create_time as createTime "
+			+ "from "
+			+ "		fin_bill_acc "
+			+ "where "
+			+ "		date_format(create_time,'%Y-%m-%d') = #{yesterday} "
+			+ "and "
+			+ "		user_id = #{userId} "// 汇票表明细
 			+ "union "
-			+ "select user_id, biz_order_no as bizOrderNo, trans_amount as transAmount, bill_balance as balanceAmount, create_time as createTime "
-			+ " from fin_listing_acc where date_format(create_time,'%Y-%m-%d') = #{yesterday} and user_id = #{userId} "// 挂牌汇票表明细
+			+ "select "
+			+ "		user_id, "
+			+ "		biz_order_no as bizOrderNo, "
+			+ "		case when drcr = 'cr' then '-1'*trans_amount else trans_amount end as transAmount, "
+			+ "		bill_balance as balanceAmount, "
+			+ "		create_time as createTime "
+			+ "from "
+			+ "		fin_listing_acc "
+			+ "where "
+			+ "		date_format(create_time,'%Y-%m-%d') = #{yesterday} "
+			+ "and "
+			+ "		user_id = #{userId} "// 挂牌汇票表明细
 			+ "group by user_id "
 			+ "order by user_id, createTime "
 			+ "desc")
