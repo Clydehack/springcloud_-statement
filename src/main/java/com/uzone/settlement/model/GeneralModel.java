@@ -22,9 +22,33 @@ public class GeneralModel {
 	@ApiModelProperty(value = "商户订单号，有容指定的订单号", required = true)
 	private String bizOrderNo;
 	@ApiModelProperty(value = "交易金额", required = true)
-	private String transAmount;
+	private Long transAmount;
 	@ApiModelProperty(value = "现有金额", required = true)
-	private String balanceAmount;
+	private Long balanceAmount;
 	@ApiModelProperty(value = "订单创建时间", required = true)
 	private String createTime;
+	public String getBizOrderNo() {
+		return bizOrderNo;
+	}
+	public void setBizOrderNo(String bizOrderNo) {
+		this.bizOrderNo = bizOrderNo;
+	}
+	public Long getTransAmount() {
+		return transAmount;
+	}
+	public void setTransAmount(Long transAmount) {
+		this.transAmount = transAmount;
+	}
+	public Long getBalanceAmount() {
+		return balanceAmount;
+	}
+	public void setBalanceAmount(Long balanceAmount) {
+		this.balanceAmount = balanceAmount;
+	}
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 }
