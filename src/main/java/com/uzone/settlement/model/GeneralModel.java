@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @ClassName GeneralModel
- * @Description 基本对账模型
+ * @Description 基本对账
  * @Author 赵丹青
  * @Date 2019/6/18 14:25
  * @Version 1.0
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("基本对账模型，所有账单都转为此类型进行对账")
+@ApiModel("基本对账，所有账单都转为此类型进行对账")
 public class GeneralModel {
 	@ApiModelProperty(value = "商户订单号，有容指定的订单号", required = true)
 	private String bizOrderNo;

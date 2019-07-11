@@ -45,7 +45,7 @@ public class CsvFileUtil {
 			*/
 			csvReader.readHeaders();
 			while (csvReader.readRecord()) {
-				GeneralModel billModel = new GeneralModel();
+				//GeneralModel billModel = new GeneralModel();
 				csvReader.get("订单类型");
 				csvReader.get("支付方式");
 				

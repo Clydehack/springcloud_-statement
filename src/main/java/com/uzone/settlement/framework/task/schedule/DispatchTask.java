@@ -17,7 +17,6 @@ import com.uzone.settlement.framework.task.handle.LocalDataHandler;
 import com.uzone.settlement.framework.task.handle.SaveHandler;
 import com.uzone.settlement.framework.util.CustomException;
 import com.uzone.settlement.framework.util.RedisUtil;
-import com.uzone.settlement.model.GeneralModel;
 
 /**
  * 任务调度
@@ -25,9 +24,10 @@ import com.uzone.settlement.model.GeneralModel;
  * TODO
  * 2019-7-9 依赖分析：通联提供的对账数据查询接口，必须依赖商户的用户id，所以必须先查本地
  * 2019-7-10 最优方案（大概吧）
- * 		①抽象出n方对账，之后扩展其他对账方改动小；
+ * 		①抽象出n方对账，之后扩展其他对账方只需实现对账方公司的对象就行了；
  * 		②各个公司的对象只要负责加载自己的数据就行了，这样抽象出一个统一加载方法，只加载对账关心的数据；
  * 		③redis的key优化，自动扩展新的对账方的key
+ * 		④统一为T+1对账，为以后兼容
  */
 @Configuration
 @EnableScheduling
@@ -58,13 +58,12 @@ public class DispatchTask {
 	/** 每半小时启动一次 */
 	@Scheduled(cron = "0/5 * * * * ?")
 	public void task() {
-		
 		try {
-			constructionHandler.initTask(yesterday);
+			List<String> userIdList = constructionHandler.initTask(yesterday);
 			logger.info("初始化完毕");
 			
-			List<GeneralModel> uzone = localDataHandler.processingTask(yesterday, LOCAL_SET);
-			allinpayHandler.processingTask(yesterday, OUTER_SET, null, uzone);
+			localDataHandler.processingTask(yesterday, LOCAL_SET, userIdList);
+			allinpayHandler.processingTask(yesterday, OUTER_SET, userIdList);
 			logger.info("数据加载完毕");
 			
 			redisUtil.sGetIntersectAndStore(LOCAL_SET, OUTER_SET, INTERSECTION);		// 本地和对方求交集
@@ -75,7 +74,10 @@ public class DispatchTask {
 			saveHandler.saveData(INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);
 			logger.info("数据落库完毕");
 		} catch (CustomException e) {
-			logger.error("code==>{},msg==>{}", e.getErrorCode(), e.getMessage());
+			logger.info("code==>{},msg==>{}", e.getErrorCode(), e.getMessage());
+		} catch (Exception e) {
+			destructionHandler.errHandleTask(yesterday);
+			logger.info("其他异常，数据清洗完毕");
 		} finally {
 			destructionHandler.closeTask(LOCAL_SET, OUTER_SET, INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);
 			logger.info("收尾完毕");

@@ -2,7 +2,11 @@ package com.uzone.settlement.model;
 
 import java.util.Date;
 
+/**
+ * 对账异常表
+ */
 public class BuCheckaccountExpPO {
+	
     private Long id;
 
     private Date checkaccountTime;
