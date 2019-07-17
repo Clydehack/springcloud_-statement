@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @ClassName GeneralModel
- * @Description 基本对账
+ * @Description 基本对账 TODO 采用领域模型设计，抽象分析对账业务的实体和关系。	采用测试驱动开发，辅助和支持领域模型的重构。  测试GitFlow流程进行开发，通过jenkins进行自动部署发布。 这是其一，其二是展示一下之前的开发过程
  * @Author 赵丹青
  * @Date 2019/6/18 14:25
  * @Version 1.0
