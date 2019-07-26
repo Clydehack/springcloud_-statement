@@ -165,6 +165,10 @@ public class RedisUtil {
         return redisTemplate.opsForHash().entries(key);
     }
  
+    public Object hmget(String key, Object hashKey){
+        return redisTemplate.opsForHash().get(key, hashKey);
+    }
+    
     /**
      * HashSet
      * @param key 键

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uzone.settlement.framework.task.mapper.DispatchTaskMapper;
+import com.uzone.settlement.framework.task.schedule.DispatchTask;
 import com.uzone.settlement.framework.util.CustomException;
 import com.uzone.settlement.framework.util.RedisUtil;
 import com.uzone.settlement.model.GeneralModel;
@@ -27,7 +28,7 @@ public class LocalDataHandler {
 		/**
 		 * 加载成功，放入redis
 		 */
-		long flag = redisUtil.sSet(key, uzone);
+		long flag = redisUtil.sSet(DispatchTask.SETTLEMENT, key, uzone);
 		if(flag != uzone.size()) {
 			// 如果加载的帐单数，和存入redis的帐单数不相符，重新来一遍，目前直接抛异常去清洗等待定时重来吧
 			throw new CustomException("12", "本地账单数量和redis加载的账单数量不一样");

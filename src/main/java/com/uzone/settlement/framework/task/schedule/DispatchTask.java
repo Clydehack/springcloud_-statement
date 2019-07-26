@@ -47,6 +47,8 @@ public class DispatchTask {
 	DestructionHandler destructionHandler;
 	@Autowired
 	RedisUtil redisUtil;
+	/** 对账key */
+	public static final String SETTLEMENT = "SETTLEMENT";	// 对账的redis的主Key
 	
 	private final String LOCAL_SET = "localSet";			// 本地账单集合key
 	private final String OUTER_SET = "outerSet";			// 对方账单集合key
