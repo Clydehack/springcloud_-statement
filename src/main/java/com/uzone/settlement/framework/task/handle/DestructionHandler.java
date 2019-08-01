@@ -1,8 +1,11 @@
 package com.uzone.settlement.framework.task.handle;
 
+import org.springframework.context.annotation.Configuration;
+
 /**
  * 析构处理
  */
+@Configuration
 public class DestructionHandler {
 
 	public void closeTask(String lOCAL_SET, String oUTER_SET, String INTERSECTION, 

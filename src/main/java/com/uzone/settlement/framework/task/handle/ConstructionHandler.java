@@ -2,6 +2,8 @@ package com.uzone.settlement.framework.task.handle;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Configuration;
+
 import com.uzone.settlement.framework.task.mapper.DispatchTaskMapper;
 import com.uzone.settlement.framework.util.CustomException;
 import com.uzone.settlement.model.BuCheckaccountLogPO;
@@ -9,6 +11,7 @@ import com.uzone.settlement.model.BuCheckaccountLogPO;
 /**
  * 初始化判断
  */
+@Configuration
 public class ConstructionHandler {
 
 	DispatchTaskMapper dispatchTaskMapper;

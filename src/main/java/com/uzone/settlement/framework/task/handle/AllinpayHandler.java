@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -19,6 +20,7 @@ import com.uzone.settlement.model.GeneralModel;
 /**
  * 拉取通联的数据，放入redis
  */
+@Configuration
 public class AllinpayHandler {
 
 	/** 通联支付接口 */

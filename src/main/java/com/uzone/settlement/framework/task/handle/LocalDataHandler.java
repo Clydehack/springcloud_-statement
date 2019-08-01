@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import com.uzone.settlement.framework.task.mapper.DispatchTaskMapper;
 import com.uzone.settlement.framework.task.schedule.DispatchTask;
@@ -11,6 +12,7 @@ import com.uzone.settlement.framework.util.CustomException;
 import com.uzone.settlement.framework.util.RedisUtil;
 import com.uzone.settlement.model.GeneralModel;
 
+@Configuration
 public class LocalDataHandler {
 
 	@Autowired RedisUtil redisUtil;

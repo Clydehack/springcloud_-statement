@@ -1,5 +1,6 @@
 package com.uzone.settlement.framework.util;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@Configuration
 public class RedisUtil {
 
 	private RedisTemplate<String, Object> redisTemplate;

@@ -3,11 +3,13 @@ package com.uzone.settlement.framework.task.handle;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uzone.settlement.framework.util.RedisUtil;
 import com.uzone.settlement.model.GeneralModel;
 
+@Configuration
 public class SaveHandler {
 
 	@Autowired
