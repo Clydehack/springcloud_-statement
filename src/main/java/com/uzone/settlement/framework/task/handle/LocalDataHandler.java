@@ -30,7 +30,7 @@ public class LocalDataHandler {
 		/**
 		 * 加载成功，放入redis
 		 */
-		long flag = redisUtil.sSet(DispatchTask.SETTLEMENT, key, uzone);
+		long flag = redisUtil.sSet(DispatchTask.SETTLEMENT, key, uzone);	// TODO 没注意，原定用无序集合，是否继续使用有序集合待定
 		if(flag != uzone.size()) {
 			// 如果加载的帐单数，和存入redis的帐单数不相符，重新来一遍，目前直接抛异常去清洗等待定时重来吧
 			throw new CustomException("12", "本地账单数量和redis加载的账单数量不一样");

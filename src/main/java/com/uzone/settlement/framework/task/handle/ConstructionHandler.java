@@ -18,10 +18,14 @@ public class ConstructionHandler {
 
 	public List<String> initTask(String date) throws CustomException {
 		BuCheckaccountLogPO log = dispatchTaskMapper.queryLog(date);
-		if (null != log && "S".equals(log.getCheckaccountStatus())) {throw new CustomException("00", "对账已完成");}
+		if (null != log && "S".equals(log.getCheckaccountStatus())) {
+			throw new CustomException("00", "对账已完成");
+		}
 		// 查出所有要对账的userid
 		List<String> userIdList = dispatchTaskMapper.queryUserId(date);
-		if (null == userIdList || userIdList.size() == 0) {throw new CustomException("01", date + " - 无交易数据");}
+		if (null == userIdList || userIdList.size() == 0) {
+			throw new CustomException("01", date + " - 无交易数据");
+		}
 		return userIdList;
 	}
 }

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
- * 人工处理账单接口（需要人工介入解决的问题都在此API中开放，例：查询对账结果，下载异常账单，上传补充数据等）
+ * 人工处理账单接口（需要人工介入解决的问题都在此API中开放，例：查询对账结果，下载异常账单，上传补充数据，后期的手工平账等）
  */
 @RestController
 @RequestMapping("ExpAccounts")
@@ -54,10 +54,11 @@ public class ExpAccountsHandleController {
 		setHeader(response);
 		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
 		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-		// 拿参数
-		String name = params.getParameter("name");
-		System.out.println(name);
-		// 拿文件
+		String savePath = request.getSession().getServletContext().getRealPath("/") + "/upload/";
+		// 获取接口参数
+		String userId = params.getParameter("userId");	// 运营人员id
+		String name = params.getParameter("name");		// 运营人员
+		// 获取收银宝账单文件
 		String fileName = "";
 		MultipartFile file = null;
         if (!files.isEmpty()) {
@@ -66,6 +67,8 @@ public class ExpAccountsHandleController {
         			fileName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('\\')+1);
         			try {
 						String file_name = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");
+						// 将对账文件存储到本地
+						
 					} catch (UnsupportedEncodingException e) {
 						
 					}

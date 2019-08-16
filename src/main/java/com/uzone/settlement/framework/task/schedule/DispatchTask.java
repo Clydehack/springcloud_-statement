@@ -49,13 +49,12 @@ public class DispatchTask {
 	RedisUtil redisUtil;
 	/** 对账key */
 	public static final String SETTLEMENT = "SETTLEMENT";	// 对账的redis的主Key
-	
 	private final String LOCAL_SET = "localSet";			// 本地账单集合key
 	private final String OUTER_SET = "outerSet";			// 对方账单集合key
 	private final String INTERSECTION = "intersection";		// 双方账单的交集key
 	private final String LOCAL_DIFF_SET = "localDiffSet";	// 本地账单和交集的差集key，通常是本地长款差错，也会有金额错误
 	private final String OUTER_DIFF_SET = "outerDiffSet";	// 对方账单和交集的差集key，通常是对方短款差错，也会有金额错误
-	private final String yesterday = LocalDate.now().minusDays(+1).toString();	// 获取前一天的日期
+	private final String yesterday = LocalDate.now().minusDays(+1).toString();	// 获取前一天的日期，当天对前一天的账
 	
 	/** 每半小时启动一次 */
 	@Scheduled(cron = "0/5 * * * * ?")
@@ -64,8 +63,8 @@ public class DispatchTask {
 			List<String> userIdList = constructionHandler.initTask(yesterday);			// 统一通过用户id获取格式化数据
 			logger.info("初始化完毕");
 			
-			localDataHandler.processingTask(yesterday, LOCAL_SET, userIdList);
-			allinpayHandler.processingTask(yesterday, OUTER_SET, userIdList);
+			localDataHandler.processingTask(yesterday, LOCAL_SET, userIdList);			// 加载本地账单
+			allinpayHandler.processingTask(yesterday, OUTER_SET, userIdList);			// 加载通联账单
 			logger.info("数据加载完毕");
 			
 			redisUtil.sGetIntersectAndStore(LOCAL_SET, OUTER_SET, INTERSECTION);		// 本地和对方求交集
@@ -73,15 +72,15 @@ public class DispatchTask {
 			redisUtil.sGetDifferenceAndStore(OUTER_SET, INTERSECTION, OUTER_DIFF_SET);	// 对方和交集求差集
 			logger.info("数据核对完毕");
 			
-			saveHandler.saveData(INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);
+			saveHandler.saveData(INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);			// 对账业务完成
 			logger.info("数据落库完毕");
 		} catch (CustomException e) {
 			logger.info("code==>{},msg==>{}", e.getErrorCode(), e.getMessage());
 		} catch (Exception e) {
-			destructionHandler.errHandleTask(yesterday);
+			destructionHandler.errHandleTask(yesterday);								// 对账异常，清洗所有数据，仅保留异常日志，等待人工在也页面处理
 			logger.info("其他异常，数据清洗完毕");
 		} finally {
-			destructionHandler.closeTask(LOCAL_SET, OUTER_SET, INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);
+			destructionHandler.closeTask(LOCAL_SET, OUTER_SET, INTERSECTION, LOCAL_DIFF_SET, OUTER_DIFF_SET);// 清理缓存
 			logger.info("收尾完毕");
 		}
 	}
